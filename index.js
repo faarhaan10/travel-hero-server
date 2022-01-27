@@ -23,6 +23,7 @@ async function run() {
         // db collections
         const userCollection = database.collection("users");
         const blogCollection = database.collection("blogs");
+        const reviewCollection = database.collection("reviews");
 
 
         /*******************************************\
@@ -111,7 +112,12 @@ async function run() {
             res.send(result);
         });
 
-
+        // review
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewCollection.find({}).sort({ "_id": -1 });
+            const result = await cursor.toArray();
+            res.send(result);
+        });
 
         /*******************************************\
          -------------all put api's----------------
