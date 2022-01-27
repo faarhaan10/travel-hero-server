@@ -22,6 +22,7 @@ async function run() {
         const database = client.db("travelHeroDB");
         // db collections
         const userCollection = database.collection("users");
+        const blogCollection = database.collection("blogs");
 
 
         /*******************************************\
@@ -31,6 +32,13 @@ async function run() {
         app.post('/users', async (req, res) => {
             const doc = req.body;
             const result = await userCollection.insertOne(doc);
+            res.send(result);
+        });
+
+        // blogs
+        app.post('/blogs', async (req, res) => {
+            const doc = req.body;
+            const result = await blogCollection.insertOne(doc);
             res.send(result);
         });
 
