@@ -13,14 +13,28 @@ app.use(express.json());
 
 //mongodb connection tools
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.y4qnm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
 
 async function run() {
     try {
         await client.connect();
+        const database = client.db("travelHeroDB");
         // db collections
+        const userCollection = database.collection("users");
 
+
+        /***************\
+         all post api's 
+        \***************/
+        // users
+        app.post('/users', async (req, res) => {
+            const doc = req.body;
+            const result = await userCollection.insertOne(doc);
+            res.send(result);
+            console.log(doc)
+            console.log(result)
+        });
 
 
     }
