@@ -59,6 +59,14 @@ async function run() {
             res.send(result);
         });
 
+        //make user to an admin
+        app.put('/users/admin', async (req, res) => {
+            const doc = req.body;
+            const filter = { email: doc.email };
+            const updateDoc = { $set: { role: 'admin' } };
+            const result = await userCollection.updateOne(filter, updateDoc);
+            res.send(result);
+        });
 
     }
     finally {
