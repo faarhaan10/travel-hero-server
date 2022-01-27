@@ -83,17 +83,20 @@ async function run() {
         });
         //blogs
         app.get('/blogs', async (req, res) => {
+            const page = req.query.page;
+            const size = parseInt(req.query.size);
             const status = { status: true };
-            const query = req.body.size;
             const cursor = blogCollection.find(status).sort({ "_id": -1 });
+            const count = await cursor.count();
+
             let result;
-            if (query) {
-                result = await cursor.limit(query).toArray();
+            if (page) {
+                result = await cursor.skip(page * size).limit(size).toArray();
             }
             else {
                 result = await cursor.toArray();
             }
-            res.send(result);
+            res.send({ result, count });
         });
 
         // top blogs
