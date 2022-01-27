@@ -59,6 +59,21 @@ async function run() {
             res.json({ admin: isAdmin });
         });
 
+        //get all blogs or filtered by email
+        app.get('/blogs/all', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            let result;
+            if (email) {
+                const cursor = blogCollection.find(query).sort({ "_id": -1 });
+                result = await cursor.toArray();
+            }
+            else {
+                const cursor = blogCollection.find({}).sort({ "_id": -1 });
+                result = await cursor.toArray();
+            }
+            res.send(result);
+        });
         //blogs
         app.get('/blogs', async (req, res) => {
             const status = { status: true };
@@ -88,7 +103,9 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await blogCollection.findOne(query);
             res.send(result);
-        })
+        });
+
+
 
         /*******************************************\
          -------------all put api's----------------
@@ -112,6 +129,17 @@ async function run() {
             res.send(result);
         });
 
+
+        /*******************************************\
+         -------------all delete api's--------------
+        \*******************************************/
+        //delete blog
+        app.delete('/blogs/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await blogCollection.deleteOne(query);
+            res.send(result);
+        });
     }
     finally {
         // await client.close();
