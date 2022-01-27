@@ -37,6 +37,20 @@ async function run() {
         });
 
 
+        /***************\
+         all put api's 
+        \***************/
+        // users
+        app.put('/users', async (req, res) => {
+            const doc = req.body;
+            const filter = { email: doc.email };
+            const options = { upsert: true };
+            const updateDoc = { $set: doc };
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
+
+
     }
     finally {
         // await client.close();
