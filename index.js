@@ -42,6 +42,12 @@ async function run() {
             res.send(result);
         });
 
+        // review
+        app.post('/reviews', async (req, res) => {
+            const doc = req.body;
+            const result = await reviewCollection.insertOne(doc);
+            res.send(result);
+        });
 
 
         /*******************************************\
@@ -126,6 +132,16 @@ async function run() {
             const filter = { email: doc.email };
             const updateDoc = { $set: { role: 'admin' } };
             const result = await userCollection.updateOne(filter, updateDoc);
+            res.send(result);
+        });
+
+        //make blog approve
+        app.put('/blogs/:id', async (req, res) => {
+            const id = req.params.id;
+            const doc = req.body;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = { $set: doc };
+            const result = await blogCollection.updateOne(filter, updateDoc);
             res.send(result);
         });
 
