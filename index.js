@@ -42,6 +42,11 @@ async function run() {
             res.send(result);
         });
 
+
+
+        /*******************************************\
+         -------------all get api's----------------
+        \*******************************************/
         //check admin
         app.get('/users', async (req, res) => {
             const email = req.query.email;
@@ -52,6 +57,21 @@ async function run() {
                 isAdmin = true;
             }
             res.json({ admin: isAdmin });
+        });
+
+        //blogs
+        app.get('/blogs', async (req, res) => {
+            const status = { status: true };
+            const query = req.body.size;
+            const cursor = blogCollection.find(status).sort({ "_id": -1 });
+            let result;
+            if (query) {
+                result = await cursor.limit(query).toArray();
+            }
+            else {
+                result = await cursor.toArray();
+            }
+            res.send(result);
         });
 
         /*******************************************\
