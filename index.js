@@ -24,22 +24,31 @@ async function run() {
         const userCollection = database.collection("users");
 
 
-        /***************\
-         all post api's 
-        \***************/
+        /*******************************************\
+         -------------all post api's----------------
+        \*******************************************/
         // users
         app.post('/users', async (req, res) => {
             const doc = req.body;
             const result = await userCollection.insertOne(doc);
             res.send(result);
-            console.log(doc)
-            console.log(result)
         });
 
+        //check admin
+        app.get('/users', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const user = await userCollection.findOne(query);
+            let isAdmin = false;
+            if (user?.role === 'admin') {
+                isAdmin = true;
+            }
+            res.json({ admin: isAdmin });
+        });
 
-        /***************\
-         all put api's 
-        \***************/
+        /*******************************************\
+         -------------all put api's----------------
+        \*******************************************/
         // users
         app.put('/users', async (req, res) => {
             const doc = req.body;
