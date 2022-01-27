@@ -74,6 +74,14 @@ async function run() {
             res.send(result);
         });
 
+        // top blogs
+        app.get('/blogs/top', async (req, res) => {
+            const status = { status: true };
+            const cursor = blogCollection.find(status).sort({ rating: -1 });
+            const result = await cursor.limit(4).toArray();
+            res.send(result);
+        });
+
         /*******************************************\
          -------------all put api's----------------
         \*******************************************/
