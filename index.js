@@ -69,7 +69,7 @@ async function run() {
         //get all blogs or filtered by email
         app.get('/blogs/all', async (req, res) => {
             const email = req.query.email;
-            const query = { email: email };
+            const query = { bloggerEmail: email };
             let result;
             if (email) {
                 const cursor = blogCollection.find(query).sort({ "_id": -1 });
